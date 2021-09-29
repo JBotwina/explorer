@@ -10,6 +10,7 @@ import { CheckIcon } from './icons/check';
 import { LoaderQuarter } from './icons/loader-quarter';
 import { AlertCircleIcon } from './icons/alert-circle';
 import { MicroblockIcon } from './icons/microblock';
+import { TxStatus } from '@common/types/tx';
 
 const keyframesRotate = keyframes`
   0% {
@@ -35,35 +36,40 @@ export const Pending = ({ speed = 0.9, ...p }: any) => (
   />
 );
 
-export type Statuses =
-  | 'success_microblock'
-  | 'success_anchor_block'
-  | 'success'
-  | 'pending'
-  | 'abort_by_response'
-  | 'abort_by_post_condition';
-
 const labelMap = {
-  success_microblock: 'Included in microblock',
-  success_anchor_block: 'Confirmed in anchor block',
   success: 'Confirmed',
   pending: 'Pending',
   abort_by_response: 'Failed',
   abort_by_post_condition: 'Failed',
+  // Not in use now
+  dropped_replace_by_fee: '',
+  dropped_replace_across_fork: '',
+  dropped_too_expensive: '',
+  dropped_stale_garbage_collect: '',
+  // Added client-side
+  success_anchor_block: 'Confirmed in anchor block',
+  success_microblock: 'Included in microblock',
+  orphaned_microblock: 'Failed',
 };
 
 const iconMap = {
-  success_microblock: () => <MicroblockIcon fill="white" />,
-  success_anchor_block: CheckIcon,
   success: CheckIcon,
   pending: Pending,
-  failed: AlertCircleIcon,
   abort_by_response: AlertCircleIcon,
   abort_by_post_condition: AlertCircleIcon,
+  // Not in use now
+  dropped_replace_by_fee: () => <></>,
+  dropped_replace_across_fork: () => <></>,
+  dropped_too_expensive: () => <></>,
+  dropped_stale_garbage_collect: () => <></>,
+  // Added client-side
+  success_anchor_block: CheckIcon,
+  success_microblock: () => <MicroblockIcon fill="white" />,
+  orphaned_microblock: AlertCircleIcon,
 };
 
 interface StatusProps extends FlexProps {
-  status: Statuses;
+  status: TxStatus;
 }
 
 export const Status: React.FC<StatusProps> = ({ status, ...rest }) => {

@@ -8,6 +8,7 @@ import { Title } from '@components/typography';
 import { getContractName, getFunctionName, microToStacks, truncateMiddle } from '@common/utils';
 import type { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 import { TxStatus } from '@common/types/tx';
+import { useTransactionStatus } from '@common/hooks/use-transaction-status';
 
 export interface TitleProps {
   contractName?: string;
@@ -41,13 +42,13 @@ const TitleDetail = ({
   contractName,
   ...rest
 }: TitleProps & {
-  status: TxStatus;
+  status?: TxStatus;
   type: Transaction['tx_type'] | MempoolTransaction['tx_type'];
 } & BoxProps) => (
   <Box {...rest}>
     <Stack isInline spacing="tight">
       <Tags type={type} />
-      <Status status={status as any} />
+      {status && <Status status={status as any} />}
     </Stack>
   </Box>
 );
@@ -70,14 +71,7 @@ export const getTxTitle = (transaction: Transaction | MempoolTransaction) => {
 };
 
 export const TransactionTitle = ({ contractName, tx, ...rest }: TitleProps & StackProps) => {
-  let txStatus: TxStatus;
-  if (tx.tx_status === 'success' && !!tx.is_unanchored) {
-    txStatus = 'success_microblock';
-  } else if (tx.tx_status === 'success' && !tx.is_unanchored) {
-    txStatus = 'success_anchor_block';
-  } else {
-    txStatus = tx.tx_status;
-  }
+  const txStatus = useTransactionStatus(tx);
 
   return (
     <Stack spacing="base" {...rest}>

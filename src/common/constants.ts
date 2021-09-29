@@ -3,6 +3,7 @@ import getConfig from 'next/config';
 import packageJson from '../../package.json';
 
 import { Transaction } from '@stacks/stacks-blockchain-api-types';
+import { TxStatus } from './types/tx';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -134,3 +135,19 @@ export const TransactionType = {
   COINBASE: 'coinbase' as Transaction['tx_type'],
   POISON_MICROBLOCK: 'poison_microblock' as Transaction['tx_type'],
 } as const;
+
+export const TransactionStatus = {
+  SUCCESS: 'success' as TxStatus,
+  PENDING: 'pending' as TxStatus,
+  ABORT_BY_RESPONSE: 'abort_by_response' as TxStatus,
+  ABORT_BY_POST_CONDITION: 'abort_by_post_condition' as TxStatus,
+  // Not in use but might need later
+  DROPPED_REPLACE_BY_FEE: 'dropped_replace_by_fee' as TxStatus,
+  DROPPED_REPLACE_ACROSS_FORK: 'dropped_replace_across_fork' as TxStatus,
+  DROPPED_TOO_EXPENSIVE: 'dropped_too_expensive' as TxStatus,
+  DROPPED_STALE_GARBAGE_COLLECT: 'dropped_stale_garbage_collect' as TxStatus,
+  // Added client-side
+  SUCCESS_ANCHOR_BLOCK: 'success_anchor_block' as TxStatus,
+  SUCCESS_MICROBLOCK: 'success_microblock' as TxStatus,
+  ORPHANED_MICROBLOCK: 'orphaned_microblock' as TxStatus,
+};

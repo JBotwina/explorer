@@ -18,7 +18,8 @@ export type TxStatus =
   | Transaction['tx_status']
   | MempoolTransaction['tx_status']
   | 'success_microblock'
-  | 'success_anchor_block';
+  | 'success_anchor_block'
+  | 'orphaned_microblock';
 
 export type TokenTransferTxs = TokenTransferTransaction | MempoolTokenTransferTransaction;
 export type CoinbaseTxs = CoinbaseTransaction | MempoolCoinbaseTransaction;

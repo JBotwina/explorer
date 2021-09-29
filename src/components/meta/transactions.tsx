@@ -97,11 +97,14 @@ const getDescription = (tx: Transaction | MempoolTransaction) => {
 export const TransactionMeta = () => {
   const transaction = useTransactionInView();
   if (!transaction) return null;
-
+  console.log(transaction);
   const pageTitle = `${getTxPageTitle(transaction)}${
     transaction.tx_status === 'pending' ? ' (Pending)' : ''
   }${
-    transaction.tx_status !== 'success' && transaction.tx_status !== 'pending' ? ' (Failed) ' : ''
+    (transaction.tx_status === 'success' && !transaction.microblock_canonical) ||
+    (transaction.tx_status !== 'success' && transaction.tx_status !== 'pending')
+      ? ' (Failed) '
+      : ''
   }`;
   const ogTitle = getOgTitle(transaction);
   const ogUrl = `/txid/${transaction.tx_id}`;

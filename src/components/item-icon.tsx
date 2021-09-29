@@ -10,6 +10,7 @@ import { MicroblockIcon } from '@components/icons/microblock';
 import { ClockIcon } from '@components/icons/clock';
 import { FailedIcon } from '@components/icons/failed';
 import { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
+import { useTransactionStatus } from '@common/hooks/use-transaction-status';
 
 export const getTxTypeIcon = (txType: Transaction['tx_type']): React.FC<BoxProps> => {
   let Icon = (p: any) => <StxInline {...p} strokeWidth={1.5} />;
@@ -90,13 +91,15 @@ export const ItemIcon = React.memo(
     type: 'tx' | 'microblock' | 'block' | 'principal';
     tx?: Transaction | MempoolTransaction;
   } & GridProps) => {
+    const txStatus = useTransactionStatus(tx);
+    const { colorMode } = useColorMode();
+
+    const showTxStatusBubble = txStatus && txStatus !== 'success';
+
     let Icon;
     if (tx?.tx_type) {
       Icon = getTxTypeIcon(tx?.tx_type);
     }
-    const showTxStatusBubble =
-      tx?.tx_status !== 'success' || (tx?.tx_status === 'success' && !!tx?.is_unanchored);
-    const { colorMode } = useColorMode();
 
     if (type === 'microblock') {
       Icon = React.memo((p: any) => (
